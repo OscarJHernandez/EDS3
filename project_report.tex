@@ -1,0 +1,153 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+
+\begin{document}
+
+%Proposal follows a well-organized structure and would be readily understood by its intended audience. Each section is written in a clear, concise and specific manner. Few grammatical and spelling mistakes are present. All resources used and referenced are properly cited.
+
+\begin{titlepage}
+	\centering
+	\vspace{1cm}
+	{\scshape\Large ED3S: Machine Learning Project \par}
+	\vspace{1.5cm}
+	{\huge\bfseries Image classification with PASCAL VOC dataset \par}
+	\vspace{1.5cm}
+	{\Large Author: Oscar Javier Hernandez\par}
+	\vfill
+
+% Bottom of the page
+	{\large \today\par}
+\end{titlepage}
+
+\section{Definition}
+%(approx. 1-2 pages)
+\subsection{Project Overview}\label{sec: overview}
+%In this section, look to provide a high-level overview of the project in layman’s terms. Questions to ask yourself when writing this section:
+%
+%Has an overview of the project been provided, such as the problem domain, project origin, and related datasets or input data?
+%Has enough background information been given so that an uninformed reader would understand the problem domain and following problem statement?
+
+%What problem is solved by your intended predictive model? 
+The problem that I have chosen for my project is the object classification task using the Pascal VOC dataset. For the sake of time I focus on building an animal classifier with five object categories; person, dog, cat, horse and other. I will outline the architecture of the implemented deep-neural network that I trained for this purpose, and discuss the data preprocessing.
+
+%Why is it important to solve your particular problem?
+This particular problem is important to solve because it was numerous real-world applications. For example, self-driving cars use sophisticated algorithms and equipment to map out their environment, in order to take appropriate actions on the road, these cars need algorithms that can classify objects on-the-fly. If the classifier detects animals on the road, it will behave differently depending on the type of animal identified. Small animals, like cats and dogs may have a tendency to run into the road unexpectedly and so the car will drive more carefully than when the animals it identified where horses or humans which are less prone to running onto the road. Of course the usefulness of this type of classifier is not limited to self-driving cars and can be used in other applications, which make this problem useful and important to solve.
+
+
+% How is the data representative of the learning problem?
+The PASCAL VOC dataset contains X pictures, with Y object categories in total. The five categories that I have chosen are a subset 
+
+%  How would the estimations of the model be used?
+The goal for this image classifier, in the case of the self-driving car example, would be for the self-driving vehicle to supply images via its cameras to the classifier, which will then return the object category to the vehicle on the fly. The algorithms in the vehicles computer system would then take the appropriate actions based on the results. However, in general 
+
+ 
+
+\newpage
+\section{Analysis}
+%(approx. 2-4 pages)
+
+\subsection{Data Exploration}
+%In this section, you will be expected to analyze the data you are using for the problem. This data can either be in the form of a dataset (or datasets), input data (or input files), or even an environment. The type of data should be thoroughly described and, if possible, have basic statistics and information presented (such as discussion of input features or defining characteristics about the input or environment). Any abnormalities or interesting qualities about the data that may need to be addressed have been identified (such as features that need to be transformed or the possibility of outliers). Questions to ask yourself when writing this section:
+%
+%If a dataset is present for this problem, have you thoroughly discussed certain features about the dataset? Has a data sample been provided to the reader?
+%If a dataset is present for this problem, are statistics about the dataset calculated and reported? Have any relevant results from this calculation been discussed?
+%If a dataset is not present for this problem, has discussion been made about the input space or input data for your problem?
+%Are there any abnormalities or characteristics about the input space or dataset that need to be addressed? (categorical variables, missing values, outliers, etc.)
+
+
+\subsection{Algorithms and Techniques}
+%In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
+%
+%Are the algorithms you will use, including any default variables/parameters in the project clearly defined?
+%Are the techniques to be used thoroughly discussed and justified?
+%Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?
+
+
+
+%
+\section{Methodology}
+%(approx. 3-5 pages)
+%
+\subsection{Data Preprocessing}
+
+\begin{lstlisting}
+testing
+\end{lstlisting}
+
+
+% What preprocessing did you apply to the data and why?
+For this project, I took a subset of the original PASCAL VOC data set. I used 100 images for the first four categories, and 300 images for the ``other" category. The data was split into a training, test and validation set.
+
+
+\section{Results}
+
+\newpage
+\begin{thebibliography}{9}
+
+\bibitem{Adhikari_2013}
+R. Adhikari and R. K. Agrawal, An Introductory Study on Time Series Modeling and Forecasting, 2013, [arXiv:1302.6613] \url{https://arxiv.org/abs/1302.6613}.
+
+\bibitem{Mong_2016}
+T. Mong and U. Ngan, Research Journal of Finance and Accounting www.iiste.org
+ISSN 2222-1697 (Paper) ISSN 2222-2847 (Online)
+Vol.7, No.12, 2016 \url{http://iiste.org/Journals/index.php/RJFA/article/viewFile/31511/32351}.
+
+\bibitem{Patel_2014} P. J. Patel,  N. J. Patel and A. R. Patel, IJAIEM 3, 3, 2014. \url{http://www.ijaiem.org/volume3issue3/IJAIEM-2014-03-05-013.pdf}
+
+% Neural networks for time Series
+\bibitem{Oancea_2014} B. Oancea, S. Cristian Ciucu, Proceedings of the CKS 2013, [arXiv:1401.1333] \url{https://arxiv.org/abs/1401.1333}.
+
+% Neural network time series  
+\bibitem{Chaudhuri_2016} T. D. Chaudhuri and I. Ghosh,	Journal of Insurance and Financial Management, Vol. 1, Issue 5, PP. 92-123, 2016,  [arXiv:1607.02093] \url{https://arxiv.org/abs/1607.02093}.
+
+% Tutorial for LSTM for time series 
+\bibitem{Pant_2018} Pant, N. (2017, September 07). A Guide For Time Series Prediction Using Recurrent Neural Networks (LSTMs). Retrieved from \url{https://blog.statsbot.co/time-series-prediction-using-recurrent-neural-networks-lstms-807fa6ca7f}.
+
+
+% Tutorial for Feed forward neural network
+\bibitem{Acatay_2017} D. K. Acatay, (2017, Nov. 21) Part 6: Time Series Prediction with Neural Networks in Python. Retrieved from \url{http://dacatay.com/data-science/part-6-time-series-prediction-neural-networks-python/}
+
+\bibitem{Vincent_2018} Vincent, T. (2018). ARIMA Time Series Data Forecasting and Visualization in Python | DigitalOcean. [online] digitalocean.com. Available at: \url{https://www.digitalocean.com/community/tutorials/a-guide-to-time-series-forecasting-with-arima-in-python-3} [Accessed 29 Jul. 2018].
+
+\bibitem{Esteban_2017} C. Esteban, S. L. Hyland and G R\"{a}tsch, \url{https://github.com/ratschlab/RGAN} [arXiv:1706.02633]. 
+
+\bibitem{Skipper_2010} S. Skipper and J. Perktold. ``Statsmodels: Econometric and statistical modeling with python." Proceedings of the 9th Python in Science Conference. 2010. \url{https://www.statsmodels.org/stable/index.html}
+
+\bibitem{Stone_1977} Stone, M. ``An Asymptotic Equivalence of Choice of Model by Cross-Validation and Akaike's Criterion.” Journal of the Royal Statistical Society. Series B (Methodological), vol. 39, no. 1, 1977, pp. 44–47. JSTOR, JSTOR, \url{www.jstor.org/stable/2984877}.
+
+
+
+\end{thebibliography}
+\end{document}
