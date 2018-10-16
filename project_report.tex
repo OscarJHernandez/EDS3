@@ -67,10 +67,10 @@ The problem that I have chosen for my project is the object classification task 
 This particular problem is important to solve because it was numerous real-world applications. For example, self-driving cars use sophisticated algorithms and equipment to map out their environment, in order to take appropriate actions on the road, these cars need algorithms that can classify objects on-the-fly. If the classifier detects animals on the road, it will behave differently depending on the type of animal identified. Small animals, like cats and dogs may have a tendency to run into the road unexpectedly and so the car will drive more carefully than when the animals it identified are humans which are less prone to running onto the road. Of course the usefulness of this type of classifier is not limited to self-driving cars and can be used in other applications, which make this problem useful and important to solve.
 
 \item {\bf How is the data representative of the learning problem?}\\
-The PASCAL VOC dataset contains 9963 images, with 20 object classes in total. The four categories that I have chosen are are the subsets \lstinline{person,cat,dog,car}. The data is representative of the learning problem since 
+The PASCAL VOC dataset contains 9963 images, with 20 object classes in total. To simplify the problem, the four categories that I have chosen are are the subsets \lstinline{person,cat,dog,car}. The data is representative of the learning problem since we have images containing objects that are separated into their specific category so that the machine learning model can learn to recognize those categories. 
 
 \item {\bf How would the estimations of the model be used?}\\
-The goal for this image classifier, in the case of the self-driving car example, would be for the self-driving vehicle to supply images via its cameras to the classifier, which will then return the object category to the vehicles computer on the fly. The algorithms in the vehicles computer system would then take the appropriate actions based on the results. However, in general the algorithms 
+The goal for this image classifier, in the case of the self-driving car example, would be for the self-driving vehicle to supply images via its cameras to the classifier, which will then return the object category to the vehicles computer on the fly. The algorithms in the vehicles computer system would then take the appropriate actions based on the results. However, in general the machine learning model would act as a black box, which is fed images and then outputs the class labels. 
 \end{itemize}
  
 
@@ -152,15 +152,23 @@ train_generator = train_datagen.flow_from_directory(
 \end{lstlisting}
 
 
+One important parameter in the above code snippet is the \lstinline{scale} parameter. This parameter will rescale all images to a particular size. This parameter was treated as a hyperparameter for the models. The values of the parameter that we chose to try were 128 and 256. Larger parameters were run, but due to limitations in computing resources, I was not able to retrieve those results. As shown in the Results section this parameter had an impact on the final models.
 
+\newpage
 \subsection{Algorithms and Techniques}
 %In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
 %
 %Are the algorithms you will use, including any default variables/parameters in the project clearly defined?
 %Are the techniques to be used thoroughly discussed and justified?
 %Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?
-Because this is an image classification problem, I chose to use convolutional neural network architectures. 
-For the architecture of the neural network I chose to try three different methods. The first is a simple benchmark model, consists of a convolutional network followed by a max pooling layer and then a dense layer with a softmax output. The summary of this network is below (Model 0),\\
+
+\begin{itemize}
+\item {\bf What classes of learning algorithms you have used, and why?}\\
+Because this is an image classification problem, I chose to use convolutional neural network architectures.
+Convolutional NNs have been shown to outperform traditional machine learning methods for image classification Ref.~\cite{Krizhevsky_2012} and represent the most current state-of-the-art methods for this problem as described in Ref.~\cite{Russakovsky_2015}. For this reason I have chosen to use CNNs for my project.
+\end{itemize}
+
+All models were implemented using Keras. For the architecture of the neural network I chose to try three different methods. The first is a simple benchmark model, consisting of a convolutional network followed by a max pooling layer and then a dense layer with a softmax output. Our more complicated models should outperform this very simple model. The summary of this network is given below (model 0) and illustrated in Fig.~\ref{fig: model0},\\
 \begin{lstlisting}
 Model 0
 _________________________________________________________________
@@ -184,8 +192,10 @@ Non-trainable params: 0
 _________________________________________________________________
 \end{lstlisting}
 
+For the next model, denoted as model 1, I tried the architecture that was suggested in the Keras blog article \cite{Chollet_2016}. This architecture consists of sequences of convolutional layers followed by an activation layer and max pooling. This pattern is repeated three times, before the output is flattened and fed into two dense layers which end in a softmax activation output. The model is regulated with dropout layers. The schematic of this network is shown below, and illustrated in Fig.~\ref{fig: model1}.
+
+
 \newpage
-The next network that we tried out (Model 1) was suggested in the Keras blog article \cite{Chollet_2016}
 \begin{lstlisting}
 Model 1
 _________________________________________________________________
@@ -229,7 +239,7 @@ _________________________________________________________________
 
 \newpage
 \noindent
-The third model that we will use is the VGG-like convnet suggested in \cite{KerasDocs}:
+The last model that I tried was the the VGG-like convnet suggested in \cite{KerasDocs}. This model consists of sequences of two consecutive convolutional layers followed by a max pooling layer. There are three such sequences, which at the end are flattened and fed into a dense layer followed by a softmax output layer. This model is denoted as model 2, is summarized below and illustrated in Fig.~\ref{fig: model2}.
 \begin{lstlisting}
 Model 2
 ________________________________________________________________
@@ -275,7 +285,7 @@ _________________________________________________________________
 
 \newpage
 \section{Results}
- In Fig.~\ref{fig: Final results 128} I plotted the results of training all three models. 
+In Figs \ref{fig: Final results 128} and \ref{fig: Final results 256} the results of training the three models are plotted for image scale sizes of 128 and 256, respectively. 
 
 \begin{figure}[h]
 \centering
@@ -291,40 +301,92 @@ _________________________________________________________________
   \caption{The loss of the model vs epoch for\\ the three models.}
   \label{fig:sub2 128}
 \end{subfigure}
-\caption{The results for three models using \lstinline{scale=128} factor}
+\caption{The results for the three models using \lstinline{scale=128} factor. The solid lines represent the value of the metrics on the training set, while the dashed lines represent the scores on the validation set.}
 \label{fig: Final results 128}
 \end{figure}
 
+\begin{figure}[h]
+\centering
+\begin{subfigure}{.7\textwidth}
+  \centering
+  \includegraphics[scale=0.5]{accuracy_vs_epoch_256.pdf}
+  \caption{The accuracy of the model vs epoch for\\ three models.}
+  \label{fig:sub1 256}
+\end{subfigure}%
+\begin{subfigure}{.6\textwidth}
+  \centering
+  \includegraphics[scale=0.5]{loss_vs_epoch_256.pdf}
+  \caption{The loss of the model vs epoch for\\ the three models.}
+  \label{fig:sub2 256}
+\end{subfigure}
+\caption{The results for the three models using \lstinline{scale=256} factor. The solid lines represent the value of the metrics on the training set, while the dashed lines represent the scores on the validation set.}
+\label{fig: Final results 256}
+\end{figure}
 
 \begin{table}[h]
 \centering
-\begin{tabular}{cccccl}
-Model & Training Accuracy & Training Loss & Validation Accuracy  & Validation Loss & scale \\ \hline
-0 & 0.5  & & 0.45 & & 128    \\
-0 & -  & & - & & 256    \\
-1 & 0.7  & & 0.56 & & 128   \\
-1 & -  & & - & & 256    \\
-2 & 0.7  & & 0.56 & & 128 \\
-2 & -  & & - & & 256    \\
+\begin{tabular}{c|cc|cc|c}
+Model & Training accuracy &  Validation accuracy & Training loss  & Validation loss & Image scale \\ \hline
+0 & 0.52  & 0.52 & 1.10 & 1.54 & 128    \\
+0 & 0.33  & 0.30 & 10.8 & 11.2 & 256    \\ \hline
+1 & 0.71  & 0.69 & 0.67 & 1.14 & 128    \\
+1 & 0.71  & 0.62 & 0.67 & 1.20 & 256   \\ \hline
+2 & 0.70  & 0.64 & 0.68 & 1.05 & 128    \\
+2 & 0.72  & 0.62 & 0.65 & 1.23 & 256 \\ \hline
 \end{tabular}
-\caption{The accuracy and losses for the training and validation sets for the three different models.}
+\caption{The accuracy and losses for the training and validation sets for the three different CNN models.}
+\label{Table: table1}
 \end{table}
+In Table \ref{Table: table1} the results of the three models are summarized using image scale parameters of 128 and 256, respectively. These metrics were produced by taking the average of the last four epoch values. The baseline model 0, was the worst performing algorithm as expected. In addition, this model performed better when using a smaller image scale. Model 1 and model 2 both outperformed the baseline model by about 20$\%$ and $50\%$ for image scale parameters 128 and 256, respectively. Both of these models achieved a training set accuracy of about $70\%$ on the training sets and above $60\%$ on the validation sets. Figs \ref{fig:sub1 128} and \ref{fig:sub1 256} seem to show that the accuracies on the validation sets (dotted lines) have plateaued and that more training epochs will not improve the performance, with the exception of model 1, scale=128. However it appears that for all models and scales, the accuracies on the training set are still increasing. The different convergence behaviors between testing and validation sets seem to indicate that, with the exception of model 1 , scale=128, the models are overfitting. This could be overcome by using more aggressive dropout parameters and adding more data to the training images. We also observe in Figs.~\ref{fig:sub2 128} and \ref{fig:sub2 256} that the losses of all models decreases as the epochs increase, but the losses are much smaller for model 1 and 2, and much higher in general for the baseline model.
+
+The result of this analysis suggests that model 1 with a scale=128 was the model that did the best, as the accuracy between training and validation sets were very comparable after 80 epochs. 
 
 
-\subsection{Challenges}
-This project had many challenges associated with it. The first problem that I encountered was that many of the images had multiple objects in it. To fix this problem, I separated the images into mutually exclusive sets. I also tried at one point to use an ``other" category for objects that the network didn't recognize, but this didn't work on the network. I decided to drop this extra category. Another issue was that some of the categories that I tried to train the networks on didn't have enough data, for example, there were only roughly ~50 images of cows, so I was not able to use this category. The categories that were used in this project were the ones I found that had the largest number of mutually exclusive members but it took some time to figure this out. Another problem that I encountered was slow execution times on CPUs, when I first developed this code, I was running it on my laptop but this proved too slow until I moved the code onto a Kaggle Kernel with a GPU, however, training the three models still takes time.
-
+\subsection{Conclusion}
+In this project, we constructed three different CNN architectures, one baseline model and two deep CNNs. In all cases our more sophisticated models outperformed the baseline model by a significant margin. The best achieved accuracy for all of the simple models that we constructed were about $70 \%$. Higher accuracies may be achievable with increased image data, improved CNN architectures and more epochs for training. In the future, I would have liked to use transfer learning to retrain the last layers of a large pre-trained model, however, I ran out of time before I was able to work out the implementation of this task.
 
 \newpage
-\subsection{Outlook}
-The best achieved accuracy for the models that we constructed were only $70 \%$. This unfortunately is lower that I expected but in the future, I would like to extend the networks I implemented by using deeper neural networks with different hyperparameters. 
+\subsection{Challenges}
+This project had many challenges associated with it. The first problem that I encountered was that many of the images had multiple objects in it. To fix this problem, I separated the images into mutually exclusive sets. I also tried at one point to use an ``other" category for objects that the network didn't recognize, but this didn't work on the network. I decided to drop this extra category. Another issue was that some of the categories that I tried to train the networks on didn't have enough data, for example, there were only roughly ~50 images of cows, so I was not able to use this category. The categories that were used in this project were the ones I found that had the largest number of mutually exclusive members but it took some time to figure this out. Another problem that I encountered was slow execution times on CPUs, when I first developed this code, I was running it on my laptop but this proved too slow until I moved the code onto a Kaggle Kernel with a GPU, however, training the three models still takes time. Another issue that I encountered was that when I tried to run the code with an image scale of 512, the code took longer than the time allowed on the Kaggle Kernel, so I was unable to get data for that scale.
+
+
 
 \begin{thebibliography}{9}
 
+\bibitem{Krizhevsky_2012} A. Krizhevsky, I. Sutskever and G. E. Hinton, ``ImageNet Classification with Deep Convolutional Neural Networks", NIPS'12, {\bf 1} 1097-1105 (2012).
+
+\bibitem{Russakovsky_2015} O. Russakovsky {\it et. al.}, ``ImageNet Large Scale Visual Recognition Challenge", Int. J. CV. {\bf 115}, 211-252 (2015).
+
 \bibitem{Chollet_2016}
-F. Chollet, (2016), ``Building powerful image classification models using very little data" \url{https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html} [Accessed 29 Jul. 2018].
-\bibitem{KerasDocs} ``Getting started with the Keras Sequential model" \url{https://keras.io/getting-started/sequential-model-guide/#examples}[Accessed 29 Jul. 2018].
+F. Chollet, (2016), ``Building powerful image classification models using very little data" \url{https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html} [Accessed 2018].
+\bibitem{KerasDocs} ``Getting started with the Keras Sequential model" \url{https://keras.io/getting-started/sequential-model-guide/#examples}[Accessed 2018].
 
 
 \end{thebibliography}
+
+\newpage
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{model0_plot.pdf}
+\caption{The architecture of model 0.}
+\label{fig: model0}
+\end{figure}
+
+\newpage
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.43]{model1_plot.pdf}
+\caption{The architecture of model 1.}
+\label{fig: model1}
+\end{figure}
+
+\newpage
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.43]{model2_plot.pdf}
+\caption{The architecture of model 2.}
+\label{fig: model2}
+\end{figure}
+
+
 \end{document}
